@@ -1,0 +1,45 @@
+{
+  "name": "draven-system",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --progress --color",
+    "precommit": "lint-staged",
+    "changelog": "conventional-changelog -i CHANGELOG.md -s -p jscs -r 0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "XiongQi",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xiongqi-XQ/Draven-System.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Xiongqi-XQ/Draven-System/issues"
+  },
+  "homepage": "https://github.com/Xiongqi-XQ/Draven-System#readme",
+  "description": "",
+  "dependencies": {
+    "antd": "^3.2.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-loader": "^7.1.4",
+    "conventional-changelog-cli": "^1.3.16",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.0",
+    "webpack": "^4.1.1",
+    "webpack-dev-server": "^3.1.1"
+  },
+  "lint-staged": {
+    "src/**/*.*": "eslint --max-warnings=0"
+  }
+}
