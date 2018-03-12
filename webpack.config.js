@@ -1,8 +1,8 @@
 module.exports = {
-  entry: './src/app.js',
+  entry: './src/main.js',
   output: {
-    filename: 'app.js', // 打包文件名
-    path: `${__dirname}/build`, // webpack本地打包路径,于publicPath作用不同
+    filename: 'dist.js', // 打包文件名
+    path: `${__dirname}/build`, // webpack本地打包路径,与publicPath作用不同
     // chunkFilename: '[name]-[id]-chunk.js',
     // 运行服务器时的打包文件夹路径,即打包在 "http://网站根目录/dist/"下,通过"http://网站根目录/dist/bundle.js"访问.
     publicPath: '/dist/', // http://www.jb51.net/article/116443.htm  publicPath路径问题详解
@@ -15,9 +15,10 @@ module.exports = {
     port: 8088,
     open: true,
     hot: true,
-    // watchOptions: {
-    //   aggregateTimeout: 1000,
-    // },
+    watchOptions: {
+      aggregateTimeout: 1000,
+      ignored: /node_modules/,
+    },
   },
   module: {
     rules: [

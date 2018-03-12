@@ -21,6 +21,7 @@
   "description": "",
   "dependencies": {
     "antd": "^3.2.3",
+    "iconv-lite": "^0.4.19",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
