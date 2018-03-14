@@ -1,4 +1,4 @@
 {
-  "presets": ["env", "react", "stage-0"],
-  "plugins": ["transform-class-properties", ["import", { "libraryName": "antd", "style": "css" }]]
+  "presets": ["env", "react"],
+  "plugins": ["transform-decorators-legacy", "transform-class-properties", ["import", { "libraryName": "antd", "style": "css" }]]
 }

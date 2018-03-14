@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --progress --color",
+    "start": "npm run dev",
+    "dev": "webpack-dev-server --progress --color --mode development",
+    "build": "webpack",
     "precommit": "lint-staged",
     "changelog": "conventional-changelog -i CHANGELOG.md -s -p jscs -r 0",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,6 +24,8 @@
   "dependencies": {
     "antd": "^3.2.3",
     "iconv-lite": "^0.4.19",
+    "mobx": "^4.0.1",
+    "mobx-react": "^5.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
@@ -29,7 +33,14 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
+    "babel-plugin-import": "^1.6.6",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-decorators": "^6.24.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "conventional-changelog-cli": "^1.3.16",
+    "css-loader": "^0.28.10",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.9.0",
@@ -37,7 +48,9 @@
     "eslint-plugin-react": "^7.7.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
+    "style-loader": "^0.20.3",
     "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12",
     "webpack-dev-server": "^3.1.1"
   },
   "lint-staged": {
