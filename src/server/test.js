@@ -2,6 +2,10 @@ const Http = require('http');
 const Querystring = require('querystring');
 const url = require('url');
 
+console.log(Querystring.stringify({
+  zjh: '2014141462275',
+  mm: 'x9601157cd',
+}));
 Http.createServer((req, res) => {
   const user = url.parse(req.url).query;
   console.log(user);

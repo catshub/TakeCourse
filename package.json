@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run dev",
-    "dev": "webpack-dev-server --progress --color --mode development",
+    "dev": "webpack-dev-server --progress --mode development",
+    "server": "node ./src/server/server.js",
     "build": "webpack",
     "precommit": "lint-staged",
     "changelog": "conventional-changelog -i CHANGELOG.md -s -p jscs -r 0",
@@ -23,11 +24,13 @@
   "description": "",
   "dependencies": {
     "antd": "^3.2.3",
+    "axios": "^0.18.0",
     "iconv-lite": "^0.4.19",
     "mobx": "^4.0.1",
     "mobx-react": "^5.0.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-hot-loader": "^4.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

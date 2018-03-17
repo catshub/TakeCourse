@@ -12,8 +12,8 @@ module.exports = {
     contentBase: './public', // webpack-dev-server提供本地服务器的文件夹
     inline: true, // reload
     // historyApiFallback: true, // false 根据路径跳转页面 ; true 路径都返回根index.html
-    port: 8088,
-    open: true,
+    port: 8080,
+    // open: true,
     // hot: true,
     watchOptions: {
       aggregateTimeout: 1000,
