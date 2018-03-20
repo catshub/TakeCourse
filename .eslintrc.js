@@ -15,18 +15,20 @@ module.exports = {
   parser: 'babel-eslint',
   extends: ['airbnb'], // "plugins": ["react","import","jsx-a11y"],
   rules: {
+    'no-plusplus': 0,
     'arrow-parens': [1, 'as-needed'],
     'comma-dangle': [1, 'only-multiline'],
     'linebreak-style': [0, 'windows'],
     'max-len': [1, 160, 2, { ignoreComments: true }],
-    "no-console": 0,
+    'no-console': 0,
     'no-unused-vars': 1,
-    'quotes': [1, 'single'],
+    quotes: [1, 'single'],
     // "react/jsx-uses-vars": 2, // Prevent variables used in JSX to be incorrectly marked as unused
     // "react/jsx-uses-react": 2, // Prevent React to be incorrectly marked as unused
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/prefer-stateless-function': 0,
     'react/prop-types': 0,
+    'react/jsx-closing-tag-location': 0,
     'import/first': 1,
     'jsx-a11y/anchor-is-valid': 0,
     // "spaced-comment": "warn",

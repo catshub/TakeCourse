@@ -1,5 +1,8 @@
+const Path = require('path');
+const Webpack = require('webpack');
+
 module.exports = {
-  entry: './src/App.js',
+  entry: ['react-hot-loader/patch', Path.resolve(__dirname, './src/main.js')],
   output: {
     filename: 'dist.js', // 打包文件名
     path: `${__dirname}/public/dist`, // webpack本地打包路径,与publicPath作用不同
@@ -14,7 +17,7 @@ module.exports = {
     // historyApiFallback: true, // false 根据路径跳转页面 ; true 路径都返回根index.html
     port: 8080,
     // open: true,
-    // hot: true,
+    hot: true,
     watchOptions: {
       aggregateTimeout: 1000,
       ignored: /node_modules/,
@@ -33,5 +36,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [],
+  plugins: [new Webpack.HotModuleReplacementPlugin()],
 };
