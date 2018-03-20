@@ -15,14 +15,13 @@ function loginAction(userData, option, res) {
       console.log(response);
       if (data.includes('学分制综合教务')) {
         const cookie = response.headers['set-cookie'][0].split(';')[0];
-        res.writeHead(200, { 'Access-Control-Allow-Origin': '*', 'Set-Cookie': 667 });
+        res.writeHead(200, { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Access-Control-Allow-Credentials': true });
         res.end(cookie);
       } else res.end('失败');
     });
   });
   realReq.end(userData);
 }
-
 // 搜索课程
 function skAction(userData, option, Cookie, res) {
   const query = QueryString.stringify(typeof userData === 'object' ? userData : JSON.parse(userData));
@@ -33,16 +32,16 @@ function skAction(userData, option, Cookie, res) {
     });
     response.on('end', () => {
       console.log(response);
+      res.writeHead(200, { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Access-Control-Allow-Credentials': true });
       if (data.includes('学分制综合教务')) {
-        res.writeHead(200, { 'Access-Control-Allow-Origin': '*'});
         res.end(data);
       } else res.end(data);
     });
   });
-  realReq.setHeader('Set-Cookie', Cookie);
+  realReq.setHeader('Cookie', Cookie);
   realReq.end(query);
 }
-// 搜索课程
+// 选课
 function XkAction(userData, option, Cookie, res) {
   const query = QueryString.stringify(typeof userData === 'object' ? userData : JSON.parse(userData));
   const realReq = Http.request(option, response => {
@@ -52,13 +51,13 @@ function XkAction(userData, option, Cookie, res) {
     });
     response.on('end', () => {
       console.log(response);
+      res.writeHead(200, { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Access-Control-Allow-Credentials': true });
       if (data.includes('学分制综合教务')) {
-        res.writeHead(200, { 'Access-Control-Allow-Origin': '*'});
         res.end(data);
       } else res.end(data);
     });
   });
-  realReq.setHeader('Set-Cookie', Cookie);
+  realReq.writeHead('Cookie', Cookie);
   realReq.end(query);
 }
 
@@ -72,17 +71,17 @@ Http.createServer((req, res) => {
       });
       req.on('end', () => loginAction(data, Api.LoginAction, res));
       break;
-    case './skAction':
+    case '/skAction':
       req.on('data', d => {
         data += d;
       });
       req.on('end', () => skAction(data, Api.XkAction, req.headers.cookie, res));
       break;
-    case './xkAction':
+    case '/xkAction':
       req.on('data', d => {
         data += d;
       });
-      req.on('end', () => xkAction(data, Api.XkAction, req.headers.cookie, res));
+      req.on('end', () => XkAction(data, Api.XkAction, req.headers.cookie, res));
       break;
     default:
       res.end('none');

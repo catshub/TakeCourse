@@ -31,9 +31,11 @@ export default class Login extends React.Component {
           baseURL: 'http://localhost:8101',
           url: '/loginAction',
           data: `zjh=${getFieldValue('userName')}&mm=${getFieldValue('password')}`,
+          withCredentials: true,
         }).then(response => {
           this.resData = response.data;
           this.props.route.cookie.cookie = response.data;
+          document.cookie = response.data;
           console.warn(this.props.route.cookie.cookie);
           // this.setState({resData: response.data})
           if (response.data.includes('JSESSIONID')) {

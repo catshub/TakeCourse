@@ -1,16 +1,25 @@
-const host = 'http://202.115.47.141';
+const host = '202.115.47.141';
+const port = 80;
 const api = {
   LoginAction: {
-    baseURL: host,
+    host,
+    port,
     method: 'post',
-    url: '/loginAction.do',
+    path: '/loginAction.do',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   },
   XkAction: {
-    baseURL: host,
+    host,
+    port,
     method: 'post',
-    url: '/xkAction.do',
+    path: '/xkAction.do',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  },
+  sTop: {
+    host,
+    port,
+    path: '/menu/s_top.jsp',
+    method: 'GET',
   },
 };
 module.exports = api;

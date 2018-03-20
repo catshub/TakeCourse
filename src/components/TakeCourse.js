@@ -17,15 +17,16 @@ export default class TakeCourse extends React.Component {
     validateFields((err, value) => {
       if (!err) {
         const data = Object.assign({}, GVs(), { pageNumber: -2, preActionType: 3, actionType: 5 });
-        console.log(data);
+        console.log(JSON.stringify(data));
         axios({
           method: 'post',
           baseURL: 'http://localhost:8101',
           url: '/skAction',
-          headers: {
-            Cookie: this.cookie,
-          },
-          data,
+          // headers: {
+          //   Cookie: this.cookie,
+          // },
+          data: JSON.stringify(data),
+          withCredentials: true,
         }).then(response => {
           this.resData = response.data;
           console.warn(this.resData);
@@ -66,10 +67,10 @@ export default class TakeCourse extends React.Component {
       // <TD width="75%" height=25 > <SELECT name=skjc > <OPTION selected></OPTION> <OPTION value=1 > 第一节</OPTION> <OPTION value=2 > 第二节</OPTION> <OPTION value=3 > 第三节</OPTION> <OPTION value=4 > 第四节</OPTION> <OPTION value=5 > 第五节</OPTION> <OPTION value=6 > 第六节</OPTION> <OPTION value=7 > 第七节</OPTION> <OPTION value=8 > 第八节</OPTION> <OPTION value=9 > 第九节</OPTION> <OPTION value=10 > 第十节</OPTION> <OPTION value=11 > 第十一节</OPTION> <OPTION value=12 > 第十二节</OPTION> <OPTION value=13 > 第十三节</OPTION></SELECT> </TD></TR > <INPUT name=pageNumber type=hidden value=-2 > </ TBODY></TABLE>
       <Form onSubmit={this.handleSubmit}>
         <Form.Item label="课程号" {...itemLayout}>
-          {GD('kch', { initialValue: '', rules: [{ type: 'number', message: 'Please input number' }] })(<Input />)}
+          {GD('kch', { initialValue: '' })(<Input />)}
         </Form.Item>
         <Form.Item label="课序号" {...itemLayout}>
-          {GD('cxkxh', { initialValue: '', rules: [{ type: 'number', message: 'Please input number' }] })(<Input />)}
+          {GD('cxkxh', { initialValue: '' })(<Input />)}
         </Form.Item>
         <Form.Item label="课程名" {...itemLayout}>
           {GD('kcm', { initialValue: '' })(<Input />)}
