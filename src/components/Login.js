@@ -33,13 +33,14 @@ export default class Login extends React.Component {
           data: `zjh=${getFieldValue('userName')}&mm=${getFieldValue('password')}`,
           withCredentials: true,
         }).then(response => {
-          this.resData = response.data;
-          this.props.route.cookie.cookie = response.data;
-          document.cookie = response.data;
-          console.warn(this.props.route.cookie.cookie);
+          this.resData = typeof response.data === 'object' ? response.data : JSON.parse(response.data);
+          this.props.route.user.cookie = this.resData.cookie;
+          this.props.route.user.name = this.resData.name;
+          document.cookie = this.resData.cookie;
+          console.warn(this.resData);
           // this.setState({resData: response.data})
-          if (response.data.includes('JSESSIONID')) {
-            message.success('登录成功');
+          if (this.resData.cookie) {
+            message.success(`登录成功,欢迎${this.resData.name}`);
             hashHistory.push('/takecourse');
           } else message.warning('登录失败');
         });

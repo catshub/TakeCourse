@@ -35,7 +35,8 @@ export default class TakeCourse extends React.Component {
     });
   };
   render() {
-    this.cookie = this.props.route.cookie.cookie;
+    this.cookie = this.props.route.user.cookie;
+    this.name = this.props.route.user.name;
     const { getFieldDecorator: GD } = this.props.form;
     const itemLayout = { labelCol: { span: 4, offset: 7 }, wrapperCol: { span: 6 }, style: { textAlign: 'center' } };
     const selectConfig = {
@@ -43,29 +44,10 @@ export default class TakeCourse extends React.Component {
       dropdownMatchSelectWidth: true,
     };
     return (
-      // <TABLE id=tblView border=0 cellSpacing=0 cellPadding=0><TBODY>
-      // <TR>
-      // <TD width="25%" height=25 class=fieldName>课程号:&nbsp;</TD>
-      // <TD width="75%"><INPUT name=kch style="FONT-SIZE: 9pt; BORDER-TOP: #9a9999 1px solid; BORDER-RIGHT: #9a9999 1px solid; WIDTH: 150px; BORDER-BOTTOM: #9a9999 1px solid; BORDER-LEFT: #9a9999 1px solid" onmouseover=this.focus() onfocus=this.select() type=text></TD></TR>
-      // <TR>
-      // <TD width="25%" height=25 class=fieldName>课序号:&nbsp;</TD>
-      // <TD width="75%"><INPUT name=cxkxh style="FONT-SIZE: 9pt; BORDER-TOP: #9a9999 1px solid; BORDER-RIGHT: #9a9999 1px solid; WIDTH: 150px; BORDER-BOTTOM: #9a9999 1px solid; BORDER-LEFT: #9a9999 1px solid" onmouseover=this.focus() onfocus=this.select() type=text></TD></TR>
-      // <TR>
-      // <TD width="25%" height=25 class=fieldName>课程名:&nbsp;</TD>
-      // <TD width="75%"><INPUT name=kcm style="FONT-SIZE: 9pt; BORDER-TOP: #9a9999 1px solid; BORDER-RIGHT: #9a9999 1px solid; WIDTH: 150px; BORDER-BOTTOM: #9a9999 1px solid; BORDER-LEFT: #9a9999 1px solid" onmouseover=this.focus() onfocus=this.select() type=text></TD></TR>
-      // <TR>
-      // <TD width="25%" height=25 class=fieldName>教师:&nbsp;</TD>
-      // <TD width="75%"><INPUT name=skjs style="FONT-SIZE: 9pt; BORDER-TOP: #9a9999 1px solid; BORDER-RIGHT: #9a9999 1px solid; WIDTH: 150px; BORDER-BOTTOM: #9a9999 1px solid; BORDER-LEFT: #9a9999 1px solid" onmouseover=this.focus() onfocus=this.select() type=text></TD></TR>
-      // <TR>
-      // <TD width="25%" height=25 class=fieldName>开课系:&nbsp;</TD>
-      // <TD width="75%"><INPUT name=kkxsjc style="FONT-SIZE: 9pt; BORDER-TOP: #9a9999 1px solid; BORDER-RIGHT: #9a9999 1px solid; WIDTH: 150px; BORDER-BOTTOM: #9a9999 1px solid; BORDER-LEFT: #9a9999 1px solid" onmouseover=this.focus() onfocus=this.select() type=text></TD></TR>
-      // <TR>
-      // <TD width="25%" height=25 class=fieldName>上课星期</TD>
-      // <TD width="75%" height=25><SELECT name=skxq> <OPTION selected></OPTION> <OPTION value=1>星期1</OPTION> <OPTION value=2>星期2</OPTION> <OPTION value=3>星期3</OPTION> <OPTION value=4>星期4</OPTION> <OPTION value=5>星期5</OPTION> <OPTION value=6>星期6</OPTION> <OPTION value=7>星期7</OPTION></SELECT> </TD></TR>
-      // <TR>
-      // <TD width="25%" height=25 class=fieldName>上课节次</TD>
-      // <TD width="75%" height=25 > <SELECT name=skjc > <OPTION selected></OPTION> <OPTION value=1 > 第一节</OPTION> <OPTION value=2 > 第二节</OPTION> <OPTION value=3 > 第三节</OPTION> <OPTION value=4 > 第四节</OPTION> <OPTION value=5 > 第五节</OPTION> <OPTION value=6 > 第六节</OPTION> <OPTION value=7 > 第七节</OPTION> <OPTION value=8 > 第八节</OPTION> <OPTION value=9 > 第九节</OPTION> <OPTION value=10 > 第十节</OPTION> <OPTION value=11 > 第十一节</OPTION> <OPTION value=12 > 第十二节</OPTION> <OPTION value=13 > 第十三节</OPTION></SELECT> </TD></TR > <INPUT name=pageNumber type=hidden value=-2 > </ TBODY></TABLE>
       <Form onSubmit={this.handleSubmit}>
+        <Form.Item style={{ textAlign: 'center' }}>
+          <span>{this.name}</span>
+        </Form.Item>
         <Form.Item label="课程号" {...itemLayout}>
           {GD('kch', { initialValue: '' })(<Input />)}
         </Form.Item>

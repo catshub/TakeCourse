@@ -1,4 +1,4 @@
-# Version 1.0.0 (2018-03-17)
+# Version 1.0.0 (2018-03-20)
 
 
 ### chore
@@ -11,8 +11,11 @@
 
 ### feat
 
-* login base ([cdd6c7b](https://github.com/Xiongqi-XQ/Draven-System/commit/cdd6c7b)) (XiongQi)
+* get user name ([aeadcde](https://github.com/Xiongqi-XQ/Draven-System/commit/aeadcde)) (XiongQi)
+* login base ([0ab0c0a](https://github.com/Xiongqi-XQ/Draven-System/commit/0ab0c0a)) (XiongQi)
 * project init ([e9f64e2](https://github.com/Xiongqi-XQ/Draven-System/commit/e9f64e2)) (XiongQi)
+* search course v0.2 ([ecd2411](https://github.com/Xiongqi-XQ/Draven-System/commit/ecd2411)) (XiongQi)
+* take course - search course ([415f25c](https://github.com/Xiongqi-XQ/Draven-System/commit/415f25c)) (XiongQi)
 
 ### test
 

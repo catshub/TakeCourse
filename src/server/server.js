@@ -4,6 +4,23 @@ const iconv = require('iconv-lite');
 const QueryString = require('querystring');
 
 // 请求教务处登录
+function getName(Cookie) {
+  return new Promise(resolve => {
+    const realReq = Http.request(Api.sTop, response => {
+      let data = '';
+      response.on('data', d => {
+        data += iconv.decode(d, 'gbk');
+      });
+      response.on('end', () => {
+        const reg = /欢迎光临&nbsp;(\S+)&nbsp;\|/g;
+        const name = reg.exec(data)[1];
+        resolve(name);
+      });
+    });
+    realReq.setHeader('Cookie', Cookie);
+    realReq.end();
+  });
+}
 function loginAction(userData, option, res) {
   // option = Api.LoginAction;
   const realReq = Http.request(option, response => {
@@ -15,8 +32,14 @@ function loginAction(userData, option, res) {
       console.log(response);
       if (data.includes('学分制综合教务')) {
         const cookie = response.headers['set-cookie'][0].split(';')[0];
-        res.writeHead(200, { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Access-Control-Allow-Credentials': true });
-        res.end(cookie);
+        getName(cookie).then(name => {
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': 'http://localhost:8080',
+            'Access-Control-Allow-Credentials': true,
+          });
+          const temp = JSON.stringify({ cookie, name });
+          res.end(temp);
+        });
       } else res.end('失败');
     });
   });

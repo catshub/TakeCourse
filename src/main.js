@@ -9,6 +9,7 @@ import App from './App';
 
 class User {
   @observable cookie = '';
+  @observable name = ''
 }
 const user = new User();
 const main = document.getElementById('main');
@@ -17,8 +18,8 @@ const render = () => {
     <AppContainer>
       <Router history={hashHistory}>
         <Route path="/" component={App}>
-          <IndexRoute component={Login} cookie={user} />
-          <Route path="takecourse" component={TakeCourse} cookie={user} />
+          <IndexRoute component={Login} user={user} />
+          <Route path="takecourse" component={TakeCourse} user={user} />
         </Route>
       </Router>
     </AppContainer>,
