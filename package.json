@@ -25,6 +25,7 @@
   "dependencies": {
     "antd": "^3.2.3",
     "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
     "iconv-lite": "^0.4.19",
     "mobx": "^4.0.1",
     "mobx-react": "^5.0.0",

@@ -13,24 +13,51 @@ export default class TakeCourse extends React.Component {
   @observable cookie = '';
   handleSubmit = e => {
     e.preventDefault();
-    const { getFieldsValue: GVs, validateFields } = this.props.form;
+    const { getFieldsValue: GVs, getFieldValue: GV, validateFields } = this.props.form;
+    const { zjh, mm } = this.props.route.user;
     validateFields((err, value) => {
       if (!err) {
-        const data = Object.assign({}, GVs(), { pageNumber: -2, preActionType: 3, actionType: 5 });
+        // const data = Object.assign({}, GVs(), { pageNumber: -2, preActionType: 3, actionType: 5 });
+        const data = {
+          query: {
+            one: {
+              kch: GV('kch'),
+              cxkxh: GV('cxkxh'),
+              preActionType: 2,
+              actionType: 5,
+              pageNumber: -2,
+              kcm: '',
+              skjs: '',
+              kkxsjc: '',
+              skxq: '',
+              skjc: '',
+            },
+            two: {
+              kcId: `${GV('kch')}_${GV('cxkxh')}`,
+              preActionType: 5,
+              actionType: 9,
+            },
+          },
+          user: { zjh, mm },
+        };
         console.log(JSON.stringify(data));
+        const loading = message.loading('...', 0);
         axios({
           method: 'post',
           baseURL: 'http://localhost:8101',
-          url: '/skAction',
+          url: '/xkAction',
           // headers: {
           //   Cookie: this.cookie,
           // },
           data: JSON.stringify(data),
           withCredentials: true,
-        }).then(response => {
-          this.resData = response.data;
-          console.warn(this.resData);
-        });
+        })
+          .then(response => {
+            this.resData = response.data;
+            message.info(this.resData);
+          })
+          .catch(error => message.info(error))
+          .finally(loading);
       }
     });
   };
@@ -49,12 +76,12 @@ export default class TakeCourse extends React.Component {
           <span>{this.name}</span>
         </Form.Item>
         <Form.Item label="课程号" {...itemLayout}>
-          {GD('kch', { initialValue: '' })(<Input />)}
+          {GD('kch', { initialValue: '', rules: [{ required: true, message: '请输入课程号!' }] })(<Input placeholder="如: 909019020" />)}
         </Form.Item>
         <Form.Item label="课序号" {...itemLayout}>
-          {GD('cxkxh', { initialValue: '' })(<Input />)}
+          {GD('cxkxh', { initialValue: '', rules: [{ required: true, message: '请输入课序号!' }] })(<Input placeholder="如: 01" />)}
         </Form.Item>
-        <Form.Item label="课程名" {...itemLayout}>
+        {/* <Form.Item label="课程名" {...itemLayout}>
           {GD('kcm', { initialValue: '' })(<Input />)}
         </Form.Item>
         <Form.Item label="教师" {...itemLayout}>
@@ -80,10 +107,10 @@ export default class TakeCourse extends React.Component {
               </Select.Option>
               ))}
           </Select>)}
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item wrapperCol={{ span: 6, offset: 9 }} style={{ textAlign: 'center' }}>
           {/* <Link to="/takecourse"> */}
-          <Button htmlType="submit">搜索</Button>
+          <Button htmlType="submit">抢课</Button>
           {/* </Link> */}
         </Form.Item>
       </Form>
