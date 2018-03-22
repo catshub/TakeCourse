@@ -1,8 +1,9 @@
 const Path = require('path');
 const Webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: ['react-hot-loader/patch', Path.resolve(__dirname, './src/main.js')],
+  entry: [Path.resolve(__dirname, './src/main.js')],
   output: {
     filename: 'dist.js', // 打包文件名
     path: `${__dirname}/public/dist`, // webpack本地打包路径,与publicPath作用不同

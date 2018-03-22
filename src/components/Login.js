@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { observable, configure, action } from 'mobx';
-import { Button, Form, Input, message, Row } from 'antd';
+import { Button, Form, Input, message, Row, Col } from 'antd';
 import axios from 'axios';
 import { browserHistory, hashHistory, Link } from 'react-router';
 
@@ -28,7 +28,7 @@ export default class Login extends React.Component {
         console.log(data);
         axios({
           method: 'post',
-          baseURL: 'http://localhost:8101',
+          baseURL: 'http://139.199.190.123:8101',
           url: '/loginAction',
           data: `zjh=${getFieldValue('userName')}&mm=${getFieldValue('password')}`,
           withCredentials: true,
@@ -61,20 +61,20 @@ export default class Login extends React.Component {
     const itemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 10 }, style: { textAlign: 'center' } };
     return (
       <Row type="flex" justify="center">
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} style={{ margin: '10px', width: '800px' }}>
           <Form.Item label="学号" {...itemLayout}>
             {getFieldDecorator('userName', {
-              initialValue: 2014141462275,
+              // initialValue: 2014141462275,
               rules: [{ required: true, message: 'Please input your username!' }],
             })(<Input placeholder="Username" />)}
           </Form.Item>
           <Form.Item label="密码" {...itemLayout}>
             {getFieldDecorator('password', {
-              initialValue: 'x9601157cd',
+              // initialValue: 'x9601157cd',
               rules: [{ required: true, message: 'Please input your Password!' }],
             })(<Input type="password" placeholder="Password" />)}
           </Form.Item>
-          <Form.Item wrapperCol={{ span: 6, offset: 9 }} style={{ textAlign: 'center' }}>
+          <Form.Item style={{ textAlign: 'center' }}>
             {/* <Link to="/takecourse"> */}
             <Button htmlType="submit">Login</Button>
             {/* </Link> */}
@@ -82,7 +82,7 @@ export default class Login extends React.Component {
           {/* <Form.Item>
           <Input.TextArea autosize value={this.resData} />
         </Form.Item> */}
-          <h2 style={{ textAlign: 'center' }}>注: 需要使用课程号,请先自行登录教务处记下所选课的课程号和课序号.时间不足,存在较多问题,希望见谅</h2>
+          <div style={{ textAlign: 'center' }}>注: 需要使用课程号,请先自行登录教务处记下所选课的课程号和课序号.时间不足,存在较多问题,希望见谅</div>
         </Form>
       </Row>
     );

@@ -37,7 +37,7 @@ function loginAction(userData, option, res) {
         getName(cookie).then(name => {
           res.setHeader('Set-Cookie', cookie);
           res.writeHead(200, {
-            'Access-Control-Allow-Origin': 'http://localhost:8080',
+            'Access-Control-Allow-Origin': Api.CrossOrigin,
             'Access-Control-Allow-Credentials': true,
           });
           const temp = JSON.stringify({ cookie, name });
@@ -46,7 +46,7 @@ function loginAction(userData, option, res) {
         });
       } else {
         res.writeHead(200, {
-          'Access-Control-Allow-Origin': 'http://localhost:8080',
+          'Access-Control-Allow-Origin': Api.CrossOrigin,
           'Access-Control-Allow-Credentials': true,
         });
         res.end('登录失败');
@@ -88,7 +88,7 @@ function skAction(userData, option, Cookie, res) {
     });
     response.on('end', () => {
       console.log(response);
-      res.writeHead(200, { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Access-Control-Allow-Credentials': true });
+      res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
       if (data.includes('学分制综合教务')) {
         res.end(data);
       } else res.end(data);
@@ -138,11 +138,11 @@ function XkAction(query, option, Cookie, res) {
             response.on('end', () => {
               const result = stopReg.exec(data);
               if (result) {
-                res.writeHead(200, { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Access-Control-Allow-Credentials': true });
+                res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
                 res.end(result[1]);
               } else if (continueReg.test(data)) {
-                res.writeHead(200, { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Access-Control-Allow-Credentials': true });
-                res.end('已开启云抢课...');
+                res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
+                res.end('已开启抢课...');
                 const i = 0;
                 const cloud = new Promise(resolve => {
                   takeCourse(queryTwo, Cookie, option, resolve, i);
@@ -152,7 +152,7 @@ function XkAction(query, option, Cookie, res) {
                   console.log('抢课结束');
                 });
               } else {
-                res.writeHead(200, { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Access-Control-Allow-Credentials': true });
+                res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
                 console.log(data);
                 res.end('出现错误');
               }

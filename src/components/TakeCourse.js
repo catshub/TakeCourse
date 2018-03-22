@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { observable, configure, action } from 'mobx';
-import { Button, Form, Input, message, Select } from 'antd';
+import { Button, Form, Input, message, Select, Row } from 'antd';
 import axios from 'axios';
 
 // configure({ enforceActions: true });
@@ -41,10 +41,10 @@ export default class TakeCourse extends React.Component {
           user: { zjh, mm },
         };
         console.log(JSON.stringify(data));
-        const loading = message.loading('...', 0);
+        message.loading('...', 1);
         axios({
           method: 'post',
-          baseURL: 'http://localhost:8101',
+          baseURL: 'http://139.199.190.123:8101',
           url: '/xkAction',
           // headers: {
           //   Cookie: this.cookie,
@@ -57,7 +57,6 @@ export default class TakeCourse extends React.Component {
             message.info(this.resData);
           })
           .catch(error => message.info(error))
-          .finally(loading);
       }
     });
   };
@@ -65,23 +64,24 @@ export default class TakeCourse extends React.Component {
     this.cookie = this.props.route.user.cookie;
     this.name = this.props.route.user.name;
     const { getFieldDecorator: GD } = this.props.form;
-    const itemLayout = { labelCol: { span: 4, offset: 7 }, wrapperCol: { span: 6 }, style: { textAlign: 'center' } };
+    const itemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 10 }, style: { textAlign: 'center' } };
     const selectConfig = {
       allowClear: true,
       dropdownMatchSelectWidth: true,
     };
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Item style={{ textAlign: 'center' }}>
-          <span>{this.name}</span>
-        </Form.Item>
-        <Form.Item label="课程号" {...itemLayout}>
-          {GD('kch', { initialValue: '', rules: [{ required: true, message: '请输入课程号!' }] })(<Input placeholder="如: 909019020" />)}
-        </Form.Item>
-        <Form.Item label="课序号" {...itemLayout}>
-          {GD('cxkxh', { initialValue: '', rules: [{ required: true, message: '请输入课序号!' }] })(<Input placeholder="如: 01" />)}
-        </Form.Item>
-        {/* <Form.Item label="课程名" {...itemLayout}>
+      <Row type="flex" justify="center">
+        <Form onSubmit={this.handleSubmit} style={{ margin: '10px', width: '800px' }}>
+          <Form.Item style={{ textAlign: 'center' }}>
+            <span>{this.name}</span>
+          </Form.Item>
+          <Form.Item label="课程号" {...itemLayout}>
+            {GD('kch', { initialValue: '', rules: [{ required: true, message: '请输入课程号!' }] })(<Input placeholder="如: 909019020" />)}
+          </Form.Item>
+          <Form.Item label="课序号" {...itemLayout}>
+            {GD('cxkxh', { initialValue: '', rules: [{ required: true, message: '请输入课序号!' }] })(<Input placeholder="如: 01" />)}
+          </Form.Item>
+          {/* <Form.Item label="课程名" {...itemLayout}>
           {GD('kcm', { initialValue: '' })(<Input />)}
         </Form.Item>
         <Form.Item label="教师" {...itemLayout}>
@@ -108,12 +108,13 @@ export default class TakeCourse extends React.Component {
               ))}
           </Select>)}
         </Form.Item> */}
-        <Form.Item wrapperCol={{ span: 6, offset: 9 }} style={{ textAlign: 'center' }}>
-          {/* <Link to="/takecourse"> */}
-          <Button htmlType="submit">抢课</Button>
-          {/* </Link> */}
-        </Form.Item>
-      </Form>
+          <Form.Item style={{ textAlign: 'center' }}>
+            {/* <Link to="/takecourse"> */}
+            <Button htmlType="submit">抢课</Button>
+            {/* </Link> */}
+          </Form.Item>
+        </Form>
+      </Row>
     );
   }
 }

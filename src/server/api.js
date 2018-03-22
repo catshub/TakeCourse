@@ -5,6 +5,7 @@ const port = 80;
 const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
 const agent = new Http.Agent({ keepAlive: true });
 const api = {
+  CrossOrigin: 'http://draven-system.xhuyq.me',
   LoginAction: {
     host,
     port,
