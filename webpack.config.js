@@ -3,7 +3,7 @@ const Webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: [Path.resolve(__dirname, './src/main.js')],
+  entry: Path.resolve(__dirname, './src/main.js'),
   output: {
     filename: 'dist.js', // 打包文件名
     path: `${__dirname}/public/dist`, // webpack本地打包路径,与publicPath作用不同
@@ -36,6 +36,21 @@ module.exports = {
         use: ['style-loader', { loader: 'css-loader' }],
       },
     ],
+  },
+  optimization: {
+    minimize: true,
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        commons: {
+          test: /node_modules/,
+          name: 'vendor',
+          chunks: 'initial',
+          minSize: 1,
+          filename: 'vender.js'
+        },
+      },
+    },
   },
   plugins: [new Webpack.HotModuleReplacementPlugin(), new UglifyJsPlugin()],
 };

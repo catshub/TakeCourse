@@ -1,4 +1,4 @@
-# Version [1.0.0](https://github.com/Xiongqi-XQ/Draven-System/compare/af0dcb8...v1.0.0) (2018-03-21)
+# Version 1.0.0 (2018-03-23)
 
 
 ### chore
@@ -9,6 +9,10 @@
 
 * source code ([af0dcb8](https://github.com/Xiongqi-XQ/Draven-System/commit/af0dcb8)) (XiongQi)
 
+### docs
+
+* add readme ([e288089](https://github.com/Xiongqi-XQ/Draven-System/commit/e288089)) (XiongQi)
+
 ### feat
 
 * get user name ([7322e61](https://github.com/Xiongqi-XQ/Draven-System/commit/7322e61)) (XiongQi)
@@ -17,6 +21,14 @@
 * search course v0.2 ([ecd2411](https://github.com/Xiongqi-XQ/Draven-System/commit/ecd2411)) (XiongQi)
 * take course - search course ([415f25c](https://github.com/Xiongqi-XQ/Draven-System/commit/415f25c)) (XiongQi)
 * Take Course v1.0.0 ([a072cb6](https://github.com/Xiongqi-XQ/Draven-System/commit/a072cb6)) (XiongQi)
+
+### fix
+
+* take course bugs ([088a9ca](https://github.com/Xiongqi-XQ/Draven-System/commit/088a9ca)) (XiongQi)
+
+### refactor
+
+* take course ([b06f478](https://github.com/Xiongqi-XQ/Draven-System/commit/b06f478)) (XiongQi)
 
 ### test
 
