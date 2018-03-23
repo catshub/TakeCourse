@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory, hashHistory, IndexRoute, Redirect } from 'react-router';
+import { Router, Route, browserHistory, hashHistory, IndexRoute } from 'react-router';
 import { observable } from 'mobx';
 import { AppContainer } from 'react-hot-loader';
 import Login from './components/Login';

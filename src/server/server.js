@@ -121,6 +121,7 @@ function takeCourse(query, Cookie, option, resolve, i) {
 // 选课
 function XkAction(query, option, Cookie, res) {
   const stopReg = />((\S+上课时间冲突)|(你已经选择了课程[^<]+)|(选课成功[^<]+))/;
+  const errorReg = /(对不起、非选课阶段不允许选课)|(请您登录后再使用)|(500 Servlet Exception)/;
   const continueReg = /(没有课余量)/;
   const queryOne = QueryString.stringify(query.one);
   const queryTwo = QueryString.stringify(query.two);
@@ -151,6 +152,9 @@ function XkAction(query, option, Cookie, res) {
                   if (/你已经选择了课程/.test(resData)) console.log('抢课成功');
                   console.log('抢课结束');
                 });
+              } else if (errorReg.test(data)) {
+                res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
+                res.end(errorReg.exec(data)[1]);
               } else {
                 res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
                 console.log(data);

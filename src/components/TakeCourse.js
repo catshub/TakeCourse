@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { observable, configure, action } from 'mobx';
-import { Button, Form, Input, message, Select, Row } from 'antd';
+import { observable } from 'mobx';
+import { Button, Form, Input, message, Row } from 'antd';
 import axios from 'axios';
 
 // configure({ enforceActions: true });
@@ -13,9 +13,9 @@ export default class TakeCourse extends React.Component {
   @observable cookie = '';
   handleSubmit = e => {
     e.preventDefault();
-    const { getFieldsValue: GVs, getFieldValue: GV, validateFields } = this.props.form;
+    const { getFieldValue: GV, validateFields } = this.props.form;
     const { zjh, mm } = this.props.route.user;
-    validateFields((err, value) => {
+    validateFields(err => {
       if (!err) {
         // const data = Object.assign({}, GVs(), { pageNumber: -2, preActionType: 3, actionType: 5 });
         const data = {
@@ -45,6 +45,7 @@ export default class TakeCourse extends React.Component {
         axios({
           method: 'post',
           baseURL: 'http://139.199.190.123:8101',
+          // baseURL: 'http://localhost:8101',
           url: '/xkAction',
           // headers: {
           //   Cookie: this.cookie,
@@ -56,7 +57,7 @@ export default class TakeCourse extends React.Component {
             this.resData = response.data;
             message.info(this.resData);
           })
-          .catch(error => message.info(error))
+          .catch(error => message.info(error));
       }
     });
   };
@@ -65,10 +66,6 @@ export default class TakeCourse extends React.Component {
     this.name = this.props.route.user.name;
     const { getFieldDecorator: GD } = this.props.form;
     const itemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 10 }, style: { textAlign: 'center' } };
-    const selectConfig = {
-      allowClear: true,
-      dropdownMatchSelectWidth: true,
-    };
     return (
       <Row type="flex" justify="center">
         <Form onSubmit={this.handleSubmit} style={{ margin: '10px', width: '800px' }}>

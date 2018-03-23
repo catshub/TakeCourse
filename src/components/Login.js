@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { observable, configure, action } from 'mobx';
-import { Button, Form, Input, message, Row, Col } from 'antd';
+import { observable } from 'mobx';
+import { Button, Form, Input, message, Row } from 'antd';
 import axios from 'axios';
-import { browserHistory, hashHistory, Link } from 'react-router';
+import { hashHistory } from 'react-router';
 
 // configure({ enforceActions: true });
 @Form.create()
@@ -19,7 +19,7 @@ export default class Login extends React.Component {
   handleSubmit = e => {
     const { getFieldValue } = this.props.form;
     e.preventDefault();
-    this.props.form.validateFields((err, value) => {
+    this.props.form.validateFields(err => {
       if (!err) {
         const data = JSON.stringify({
           zjh: getFieldValue('userName'),
@@ -29,12 +29,10 @@ export default class Login extends React.Component {
         axios({
           method: 'post',
           baseURL: 'http://139.199.190.123:8101',
+          // baseURL: 'http://localhost:8101',
           url: '/loginAction',
           data: `zjh=${getFieldValue('userName')}&mm=${getFieldValue('password')}`,
           withCredentials: true,
-          // headers: {
-          //   Connection: 'keep-alive',
-          // },
         })
           .then(response => {
             if (response.data !== '登录失败') {

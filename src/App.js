@@ -1,11 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router';
 import { observer } from 'mobx-react';
-import { observable, configure } from 'mobx';
-import { hot } from 'react-hot-loader';
-import Login from './components/Login';
-import TakeCourse from './components/TakeCourse';
+import { observable } from 'mobx';
 
 // configure({ enforceActions: true });
 

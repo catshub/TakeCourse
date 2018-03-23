@@ -11,7 +11,7 @@ module.exports = {
     // 运行服务器时的打包文件夹路径,即打包在 "http://网站根目录/dist/"下,通过"http://网站根目录/dist/bundle.js"访问.
     publicPath: '/dist/', // http://www.jb51.net/article/116443.htm  publicPath路径问题详解
   },
-  devtool: 'eval-source-map',
+  // devtool: 'eval-source-map',
   devServer: {
     contentBase: './public', // webpack-dev-server提供本地服务器的文件夹
     inline: true, // reload
@@ -37,5 +37,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [new Webpack.HotModuleReplacementPlugin()],
+  plugins: [new Webpack.HotModuleReplacementPlugin(), new UglifyJsPlugin()],
 };
