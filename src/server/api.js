@@ -1,9 +1,9 @@
 const host = '202.115.47.141';
 const port = 80;
 const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+const CrossOrigin = /http:\/\/draven-system.xhuyq.me|http:\/\/localhost:8080/;
 const api = {
-  CrossOrigin: 'http://draven-system.xhuyq.me',
-  // CrossOrigin: 'http://localhost:8080',
+  CrossOrigin,
   LoginAction: {
     host,
     port,
@@ -25,7 +25,7 @@ const api = {
     method: 'GET',
     headers,
   },
-  GetOnce: {
+  XkFirst: {
     host,
     port,
     path: '/xkAction.do?actionType=-1',

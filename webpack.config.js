@@ -1,11 +1,13 @@
 const Path = require('path');
 const Webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: Path.resolve(__dirname, './src/main.js'),
+  entry: { dist: Path.resolve(__dirname, './src/main.js') /* , vender: ['react', 'react-dom', 'react-router', 'mobx', 'mobx-react'] */ },
   output: {
-    filename: 'dist.js', // 打包文件名
+    filename: '[name].js', // 打包文件名
+    // chunkFilename: '[name]-chunk.js',
     path: `${__dirname}/public/dist`, // webpack本地打包路径,与publicPath作用不同
     // chunkFilename: '[name]-[id]-chunk.js',
     // 运行服务器时的打包文件夹路径,即打包在 "http://网站根目录/dist/"下,通过"http://网站根目录/dist/bundle.js"访问.
@@ -33,24 +35,17 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', { loader: 'css-loader' }],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader', // 编译后用来提取的loaader
+          use: { loader: 'css-loader', options: { minimize: true } }, // 用来编译文件的loader
+        }),
       },
     ],
   },
-  optimization: {
-    minimize: true,
-    splitChunks: {
-      cacheGroups: {
-        default: false,
-        commons: {
-          test: /node_modules/,
-          name: 'vendor',
-          chunks: 'initial',
-          minSize: 1,
-          filename: 'vender.js'
-        },
-      },
-    },
-  },
-  plugins: [new Webpack.HotModuleReplacementPlugin(), new UglifyJsPlugin()],
+  plugins: [
+    new Webpack.HotModuleReplacementPlugin(),
+    new UglifyJsPlugin(),
+    new ExtractTextPlugin('style.css'),
+    /* new Webpack.optimize.CommonsChunkPlugin({ name: 'vender' }), */
+  ],
 };
