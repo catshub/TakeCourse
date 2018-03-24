@@ -1,54 +1,36 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { observable } from 'mobx';
 import { Button, Form, Input, message, Row } from 'antd';
-import axios from 'axios';
 import { hashHistory } from 'react-router';
 
-// configure({ enforceActions: true });
 @Form.create()
 @observer
 export default class Login extends React.Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     resData: 'state',
-  //   };
-  // }
-  @observable resData = 'nothin';
   handleSubmit = e => {
-    const { getFieldValue } = this.props.form;
+    const { getFieldValue: GV } = this.props.form;
     e.preventDefault();
     this.props.form.validateFields(err => {
       if (!err) {
-        const data = JSON.stringify({
-          zjh: getFieldValue('userName'),
-          mm: getFieldValue('password'),
-        });
-        console.log(data);
-        axios({
+        fetch('http://draven-system.xhuyq.me:8101/loginAction', {
           method: 'post',
-          baseURL: 'http://139.199.190.123:8101',
-          // baseURL: 'http://localhost:8101',
-          url: '/loginAction',
-          data: `zjh=${getFieldValue('userName')}&mm=${getFieldValue('password')}`,
-          withCredentials: true,
+          body: JSON.stringify({ zjh: GV('zjh'), mm: GV('mm') }),
+          credentials: 'include',
         })
+          .then(res => res.text())
           .then(response => {
-            if (response.data !== '登录失败') {
-              this.resData = typeof response.data === 'object' ? response.data : JSON.parse(response.data);
-              this.props.route.user.cookie = this.resData.cookie;
-              this.props.route.user.name = this.resData.name;
-              this.props.route.user.zjh = getFieldValue('userName');
-              this.props.route.user.mm = getFieldValue('password');
+            if (response !== '登录失败') {
+              const resData = typeof response === 'object' ? response : JSON.parse(response);
+              this.props.route.user.cookie = resData.cookie;
+              this.props.route.user.name = resData.name;
+              this.props.route.user.zjh = GV('zjh');
+              this.props.route.user.mm = GV('mm');
               // document.cookie = this.resData.cookie;
-              console.warn(this.resData);
-              // this.setState({resData: response.data})
-              if (this.resData.cookie) {
-                message.success(`登录成功,欢迎${this.resData.name}`);
+              console.warn(resData);
+              if (resData.cookie) {
+                message.success(`登录成功,欢迎${resData.name}`);
                 hashHistory.push('/takecourse');
               } else message.warning('登录失败');
-            } else message.warning('登录失败');
+            } else message.warning(response);
           })
           .catch(error => message.warning(error));
       }
@@ -61,26 +43,21 @@ export default class Login extends React.Component {
       <Row type="flex" justify="center">
         <Form onSubmit={this.handleSubmit} style={{ margin: '10px', width: '800px' }}>
           <Form.Item label="学号" {...itemLayout}>
-            {getFieldDecorator('userName', {
+            {getFieldDecorator('zjh', {
               // initialValue: 2014141462275,
-              rules: [{ required: true, message: 'Please input your username!' }],
-            })(<Input placeholder="Username" />)}
+              rules: [{ required: true, message: '请输入学号！' }],
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="密码" {...itemLayout}>
-            {getFieldDecorator('password', {
+            {getFieldDecorator('mm', {
               // initialValue: 'x9601157cd',
-              rules: [{ required: true, message: 'Please input your Password!' }],
-            })(<Input type="password" placeholder="Password" />)}
+              rules: [{ required: true, message: '请输入密码！' }],
+            })(<Input type="password" />)}
           </Form.Item>
           <Form.Item style={{ textAlign: 'center' }}>
-            {/* <Link to="/takecourse"> */}
             <Button htmlType="submit">Login</Button>
-            {/* </Link> */}
           </Form.Item>
-          {/* <Form.Item>
-          <Input.TextArea autosize value={this.resData} />
-        </Form.Item> */}
-          <div style={{ textAlign: 'center' }}>注: 需要使用课程号,请先自行登录教务处记下所选课的课程号和课序号.时间不足,存在较多问题,希望见谅</div>
+          <div style={{ textAlign: 'center' }}>注: 需要使用课程号,请先自行登录教务处记下所选课的课程号和课序号.</div>
         </Form>
       </Row>
     );

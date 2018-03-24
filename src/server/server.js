@@ -2,61 +2,12 @@ const Http = require('http');
 const Api = require('./api');
 const iconv = require('iconv-lite');
 const QueryString = require('querystring');
-// const cheerio = require('cheerio');
+const chalk = require('chalk');
 
-// getName
-function getName(Cookie) {
-  return new Promise(resolve => {
-    const realReq = Http.request(Api.sTop, response => {
-      let data = '';
-      response.on('data', d => {
-        data += iconv.decode(d, 'gbk');
-      });
-      response.on('end', () => {
-        const reg = /欢迎光临&nbsp;(\S+)&nbsp;\|/g;
-        const name = reg.exec(data)[1];
-        resolve(name);
-      });
-    });
-    realReq.setHeader('Cookie', Cookie);
-    realReq.setSocketKeepAlive(true);
-    realReq.end();
-  });
-}
-function loginAction(userData, option, res) {
-  // option = Api.LoginAction;
-  const realReq = Http.request(option, response => {
-    let data = '';
-    response.on('data', d => {
-      data += iconv.decode(d, 'gbk');
-    });
-    response.on('end', () => {
-      // console.log(response);
-      if (data.includes('学分制综合教务')) {
-        const cookie = response.headers['set-cookie'][0].split(';')[0];
-        getName(cookie).then(name => {
-          res.setHeader('Set-Cookie', cookie);
-          res.writeHead(200, {
-            'Access-Control-Allow-Origin': Api.CrossOrigin,
-            'Access-Control-Allow-Credentials': true,
-          });
-          const temp = JSON.stringify({ cookie, name });
-          console.log(cookie);
-          res.end(temp);
-        });
-      } else {
-        res.writeHead(200, {
-          'Access-Control-Allow-Origin': Api.CrossOrigin,
-          'Access-Control-Allow-Credentials': true,
-        });
-        res.end('登录失败');
-      }
-    });
-  });
-  realReq.setSocketKeepAlive(true);
-  realReq.setHeader('Content-Length', Buffer.byteLength(userData));
-  realReq.end(userData);
-}
+const Log = message => console.log(`[${new Date().toLocaleString()}] `, message);
+const Tip = message => console.log(chalk.yellow.bold(`[${new Date().toLocaleString()}] `, message));
+const Error = message => console.log(chalk.red(`[${new Date().toLocaleString()}] `, message));
+
 // getCookie
 function getCookie(userData, option) {
   return new Promise(resolve => {
@@ -74,133 +25,162 @@ function getCookie(userData, option) {
     });
     realReq.setSocketKeepAlive(true);
     // realReq.setHeader('Content-Length', Buffer.byteLength(userData));
-    console.log(QueryString.stringify(userData));
+    Log(QueryString.stringify(userData));
     realReq.end(QueryString.stringify(userData));
   });
 }
-// 搜索课程
-function skAction(userData, option, Cookie, res) {
-  const query = QueryString.stringify(typeof userData === 'object' ? userData : JSON.parse(userData));
-  const realReq = Http.request(option, response => {
-    let data = '';
+
+// getName
+function getName(Cookie) {
+  return new Promise(resolve => {
+    const scuReq = Http.request(Api.sTop, response => {
+      let scuData = '';
+      response.on('data', d => {
+        scuData += iconv.decode(d, 'gbk');
+      });
+      response.on('end', () => {
+        const reg = /欢迎光临&nbsp;(\S+)&nbsp;\|/;
+        const name = reg.exec(scuData)[1];
+        resolve(name);
+      });
+    });
+    scuReq.setHeader('Cookie', Cookie);
+    scuReq.end();
+  });
+}
+
+// login
+function loginAction(userData, option, res, origin) {
+  const scuReq = Http.request(option, response => {
+    let scuData = '';
     response.on('data', d => {
-      data += iconv.decode(d, 'gbk');
+      scuData += iconv.decode(d, 'gbk');
     });
     response.on('end', () => {
-      console.log(response);
-      res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
-      if (data.includes('学分制综合教务')) {
-        res.end(data);
-      } else res.end(data);
+      if (scuData.includes('学分制综合教务')) {
+        const cookie = response.headers['set-cookie'][0].split(';')[0];
+        getName(cookie).then(name => {
+          res.setHeader('Set-Cookie', cookie);
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': origin,
+            'Access-Control-Allow-Credentials': true,
+          });
+          const resData = JSON.stringify({ cookie, name });
+          res.end(resData);
+          Tip(`${name}(${userData.zjh}): Login`);
+        });
+      } else {
+        res.writeHead(200, {
+          'Access-Control-Allow-Origin': origin,
+          'Access-Control-Allow-Credentials': true,
+        });
+        res.end('登录失败');
+      }
     });
   });
-  realReq.setHeader('Cookie', Cookie);
-  realReq.setHeader('Content-Length', Buffer.byteLength(query));
-  realReq.end(query);
+  // scuReq.setHeader('Content-Length', Buffer.byteLength(userData));
+  scuReq.end(QueryString.stringify(userData));
 }
+
 // 云抢课
-function takeCourse(query, Cookie, option, resolve, i) {
+function takeCourse(query, Cookie, option, resolve, name, zjh, count) {
   const cloudReq = Http.request(option, response => {
-    let data = '';
+    let scuData = '';
     response.on('data', d => {
-      data += iconv.decode(d, 'gbk');
+      scuData += iconv.decode(d, 'gbk');
     });
     response.on('end', () => {
-      if (!/(没有课余量)/.test(data)) {
-        resolve(data);
+      if (!/(没有课余量)/.test(scuData)) {
+        resolve({ scuData, count });
       } else {
-        setTimeout(() => takeCourse(query, Cookie, option, resolve, i), 500);
-        console.log(`抢课中... ${i++}`);
+        setTimeout(() => {
+          if (count % 1000 === 0) Log(`${name}(${zjh}): 抢课中.... 抢课次数: ${count}`);
+          takeCourse(query, Cookie, option, resolve, name, zjh, count + 1);
+        }, 500);
       }
     });
   });
   cloudReq.setHeader('Cookie', Cookie);
-  cloudReq.setHeader('Content-Length', Buffer.byteLength(query));
+  // cloudReq.setHeader('Content-Length', Buffer.byteLength(query));
   cloudReq.end(query);
 }
 // 选课
-function XkAction(query, option, Cookie, res) {
+function XkAction(queryData, option, Cookie = 'none', res, origin) {
   const stopReg = />((\S+上课时间冲突)|(你已经选择了课程[^<]+)|(选课成功[^<]+))/;
   const errorReg = /(对不起、非选课阶段不允许选课)|(请您登录后再使用)|(500 Servlet Exception)/;
   const continueReg = /(没有课余量)/;
-  const queryOne = QueryString.stringify(query.one);
-  const queryTwo = QueryString.stringify(query.two);
-  const temp = Http.request(Api.GetOnce, responseIni => {
-    responseIni.on('data', () => {});
-    responseIni.on('end', () => {
-      const getOnce = Http.request(Api.XkAction, responseOne => {
-        responseOne.on('data', () => {});
-        responseOne.on('end', () => {
+  const querySecond = QueryString.stringify(queryData.query.second);
+  const queryThird = QueryString.stringify(queryData.query.third);
+  const { zjh, name } = queryData.user;
+  const reqFirst = Http.request(Api.XkFirst, resFirst => {
+    resFirst.on('data', () => {});
+    resFirst.on('end', () => {
+      const reqSecond = Http.request(option, resSecond => {
+        resSecond.on('data', () => {});
+        resSecond.on('end', () => {
           const realReq = Http.request(option, response => {
-            let data = '';
+            let scuData = '';
             response.on('data', d => {
-              data += iconv.decode(d, 'gbk');
+              scuData += iconv.decode(d, 'gbk');
             });
             response.on('end', () => {
-              const result = stopReg.exec(data);
-              if (result) {
-                res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
-                res.end(result[1]);
-              } else if (continueReg.test(data)) {
-                res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
+              res.writeHead(200, { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Credentials': true });
+              if (stopReg.test(scuData)) {
+                Log(`${name}(${zjh}): ${stopReg.exec(scuData)[1]}`);
+                res.end(stopReg.exec(scuData)[1]);
+              } else if (continueReg.test(scuData)) {
+                Tip(`${name}(${zjh}): 开启抢课...`);
                 res.end('已开启抢课...');
-                const i = 0;
                 const cloud = new Promise(resolve => {
-                  takeCourse(queryTwo, Cookie, option, resolve, i);
+                  takeCourse(queryThird, Cookie, option, resolve, name, zjh, 1);
                 });
                 cloud.then(resData => {
-                  if (/你已经选择了课程/.test(resData)) console.log('抢课成功');
-                  console.log('抢课结束');
+                  if (/你已经选择了课程/.test(resData.scuData)) Tip(`${name}(${zjh}): 抢课完成,抢课次数: ${resData.count}`);
+                  Tip(`${name}(${zjh}): 抢课结束,结果不明 ${resData.scuData}`);
                 });
-              } else if (errorReg.test(data)) {
-                res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
-                res.end(errorReg.exec(data)[1]);
+              } else if (errorReg.test(scuData)) {
+                Log(`${name}(${zjh}): ${errorReg.exec(scuData)[0]}`);
+                res.end(errorReg.exec(scuData)[0]);
               } else {
-                res.writeHead(200, { 'Access-Control-Allow-Origin': Api.CrossOrigin, 'Access-Control-Allow-Credentials': true });
-                console.log(data);
+                Error(`${name}(${zjh}): ${scuData}`);
                 res.end('出现错误');
               }
             });
           });
           realReq.setHeader('Cookie', Cookie);
-          realReq.setHeader('Content-Length', Buffer.byteLength(queryTwo));
-          realReq.end(queryTwo);
+          // realReq.setHeader('Content-Length', Buffer.byteLength(queryThird));
+          realReq.end(queryThird);
         });
       });
-      getOnce.setHeader('Cookie', Cookie);
-      getOnce.end(queryOne);
+      reqSecond.setHeader('Cookie', Cookie);
+      reqSecond.end(querySecond);
     });
   });
-  temp.setHeader('Cookie', Cookie);
-  temp.end();
+  reqFirst.setHeader('Cookie', Cookie);
+  reqFirst.end();
 }
+
+// server
 Http.createServer((req, res) => {
-  // const user = url.parse(req.url).query;
+  const origin = Api.CrossOrigin.test(req.headers.origin) ? req.headers.origin : 'http://draven-system.xhuyq.me';
   let data = '';
   switch (req.url) {
     case '/loginAction':
       req.on('data', d => {
         data += d;
       });
-      req.on('end', () => loginAction(data, Api.LoginAction, res));
-      break;
-    case '/skAction':
-      req.on('data', d => {
-        data += d;
-      });
-      req.on('end', () => skAction(data, Api.XkAction, req.headers.cookie, res));
+      req.on('end', () => loginAction(JSON.parse(data), Api.LoginAction, res, origin));
       break;
     case '/xkAction':
       req.on('data', d => {
         data += d;
       });
       req.on('end', () => {
-        const { query, user } = JSON.parse(data);
         // getCookie(user, Api.LoginAction).then(cookie => {
         //   if (cookie !== 0) XkAction(query, Api.XkAction, cookie, res);
         //   else res.end('错误');
         // });
-        XkAction(query, Api.XkAction, req.headers.cookie, res);
+        XkAction(JSON.parse(data), Api.XkAction, req.headers.cookie, res, origin);
       });
       break;
     default:
@@ -208,4 +188,4 @@ Http.createServer((req, res) => {
       break;
   }
 }).listen(8101);
-console.log('server ing');
+Log('server ing');
