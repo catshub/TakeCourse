@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 import { observable } from 'mobx';
-import Login from './components/Login';
-import TakeCourse from './components/TakeCourse';
+import Login from './client/components/Login';
+import TakeCourse from './client/components/TakeCourse';
 import App from './App';
 
 class User {

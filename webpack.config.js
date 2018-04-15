@@ -2,16 +2,17 @@ const Path = require('path');
 const Webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: { dist: Path.resolve(__dirname, './src/main.js') /* , vender: ['react', 'react-dom', 'react-router', 'mobx', 'mobx-react'] */ },
   output: {
-    filename: '[name].js', // 打包文件名
+    filename: 'static/js/[name].js', // 打包文件名
     // chunkFilename: '[name]-chunk.js',
-    path: `${__dirname}/public/dist`, // webpack本地打包路径,与publicPath作用不同
+    path: `${__dirname}/public`, // webpack本地打包路径,与publicPath作用不同
     // chunkFilename: '[name]-[id]-chunk.js',
     // 运行服务器时的打包文件夹路径,即打包在 "http://网站根目录/dist/"下,通过"http://网站根目录/dist/bundle.js"访问.
-    publicPath: '/dist/', // http://www.jb51.net/article/116443.htm  publicPath路径问题详解
+    publicPath: '/', // http://www.jb51.net/article/116443.htm  publicPath路径问题详解
   },
   // devtool: 'eval-source-map',
   devServer: {
@@ -44,8 +45,23 @@ module.exports = {
   },
   plugins: [
     new Webpack.HotModuleReplacementPlugin(),
-    new UglifyJsPlugin(),
-    new ExtractTextPlugin('style.css'),
+    new UglifyJsPlugin({
+      // uglifyOptions: {
+      //   compress: {
+      //     warnings: false
+      //   }
+      // }
+    }),
+    new ExtractTextPlugin('static/css/style.css'),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'src/static/index.html',
+      favicon: 'src/static/images/x-logo.png',
+      inject: true,
+      minify: {},
+      hash: true,
+      cache: true,
+    }),
     /* new Webpack.optimize.CommonsChunkPlugin({ name: 'vender' }), */
   ],
 };
