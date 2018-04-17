@@ -44,13 +44,11 @@ export default class Login extends React.Component {
         <Form onSubmit={this.handleSubmit} style={{ margin: '10px', width: '800px' }}>
           <Form.Item label="学号" {...itemLayout}>
             {getFieldDecorator('zjh', {
-              // initialValue: 2014141462275,
               rules: [{ required: true, message: '请输入学号！' }],
             })(<Input />)}
           </Form.Item>
           <Form.Item label="密码" {...itemLayout}>
             {getFieldDecorator('mm', {
-              // initialValue: 'x9601157cd',
               rules: [{ required: true, message: '请输入密码！' }],
             })(<Input type="password" />)}
           </Form.Item>

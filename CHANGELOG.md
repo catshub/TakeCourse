@@ -1,4 +1,4 @@
-# Version [1.0.0](https://github.com/Xiongqi-XQ/TakeCourse/compare/af0dcb8...v1.0.0) (2018-03-24)
+# Version 1.0.0 (2018-04-17)
 
 
 ### chore
@@ -28,8 +28,13 @@
 
 ### refactor
 
-* code optimize && add log & monitor ([764bd26](https://github.com/Xiongqi-XQ/TakeCourse/commit/764bd26)) (XiongQi)
+* change webpack config ([3efcfe5](https://github.com/Xiongqi-XQ/TakeCourse/commit/3efcfe5)) (XiongQi)
+* code optimize && add log & monitor ([bde8ea3](https://github.com/Xiongqi-XQ/TakeCourse/commit/bde8ea3)) (XiongQi)
 * take course ([b06f478](https://github.com/Xiongqi-XQ/TakeCourse/commit/b06f478)) (XiongQi)
+
+### style
+
+* comment ([48910ba](https://github.com/Xiongqi-XQ/TakeCourse/commit/48910ba)) (XiongQi)
 
 ### test
 
