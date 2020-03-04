@@ -1,1 +1,1 @@
-# [四川大学云抢课](http://draven-system.xhuyq.me/draven/)
+# [四川大学云抢课](http://league.xhuyq.me/draven/)
